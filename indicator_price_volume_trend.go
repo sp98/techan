@@ -20,7 +20,7 @@ func NewPriceVolumeTrendIndicator(closePriceIndicator, volumeIndicator Indicator
 
 func (pvt *pvtIndicator) Calculate(index int) big.Decimal {
 	if cachedValue := returnIfCached(pvt, index, func(i int) big.Decimal {
-		return pvt.volumeIndicator.Calculate(i)
+		return big.ZERO
 	}); cachedValue != nil {
 		return *cachedValue
 	}
@@ -41,3 +41,7 @@ func (pvt *pvtIndicator) setCache(newCache resultCache) {
 }
 
 func (pvt *pvtIndicator) windowSize() int { return pvt.window }
+
+func NewPVTAndSignalIndicator(pvtIndicator, signalIndicator Indicator) Indicator {
+	return NewDifferenceIndicator(pvtIndicator, signalIndicator)
+}
