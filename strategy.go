@@ -1,7 +1,5 @@
 package techan
 
-import "fmt"
-
 // Strategy is an interface that describes desired entry and exit trading behavior
 type Strategy interface {
 	ShouldEnter(index int, record *TradingRecord) bool
@@ -18,7 +16,6 @@ type RuleStrategy struct {
 
 // ShouldEnter will return true when the index is less than the unstable period and the entry rule is satisfied
 func (rs RuleStrategy) ShouldEnter(index int, record *TradingRecord) bool {
-	fmt.Println("Hello")
 	if rs.EntryRule == nil {
 		panic("entry rule cannot be nil")
 	}
