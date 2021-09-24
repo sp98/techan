@@ -45,3 +45,11 @@ func (ts *TimeSeries) LastCandle() *Candle {
 func (ts *TimeSeries) LastIndex() int {
 	return len(ts.Candles) - 1
 }
+
+func (ts *TimeSeries) GetCandle(index int) *Candle {
+	if index > ts.LastIndex() {
+		panic(fmt.Errorf("error getting Candle: index %d cannot be greater than length of the series", index))
+	}
+
+	return ts.Candles[index]
+}
