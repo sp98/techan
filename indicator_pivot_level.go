@@ -58,11 +58,11 @@ func calculateR3(pivotPoint big.Decimal, series *TimeSeries, previousPeriodIndex
 	low := lastCandle.MinPrice
 
 	for _, index := range previousPeriodIndexes {
-		nextHigh := series.GetCandle(previousPeriodIndexes[index]).MaxPrice
+		nextHigh := series.GetCandle(index).MaxPrice
 		if nextHigh.GT(high) {
 			high = nextHigh
 		}
-		nextLow := series.GetCandle(previousPeriodIndexes[index]).MinPrice
+		nextLow := series.GetCandle(index).MinPrice
 		if nextLow.LT(low) {
 			low = nextLow
 		}
@@ -77,11 +77,11 @@ func calculateR2(pivotPoint big.Decimal, series *TimeSeries, previousPeriodIndex
 	low := lastCandle.MinPrice
 
 	for _, index := range previousPeriodIndexes {
-		nextHigh := series.GetCandle(previousPeriodIndexes[index]).MaxPrice
+		nextHigh := series.GetCandle(index).MaxPrice
 		if nextHigh.GT(high) {
 			high = nextHigh
 		}
-		nextLow := series.GetCandle(previousPeriodIndexes[index]).MinPrice
+		nextLow := series.GetCandle(index).MinPrice
 		if nextLow.LT(low) {
 			low = nextLow
 		}
@@ -95,7 +95,7 @@ func calculateR1(pivotPoint big.Decimal, series *TimeSeries, previousPeriodIndex
 	low := lastCandle.MinPrice
 
 	for _, index := range previousPeriodIndexes {
-		nextLow := series.GetCandle(previousPeriodIndexes[index]).MinPrice
+		nextLow := series.GetCandle(index).MinPrice
 		if nextLow.LT(low) {
 			low = nextLow
 		}
@@ -109,7 +109,7 @@ func calculateS1(pivotPoint big.Decimal, series *TimeSeries, previousPeriodIndex
 	high := lastCandle.MaxPrice
 
 	for _, index := range previousPeriodIndexes {
-		nextHigh := series.GetCandle(previousPeriodIndexes[index]).MaxPrice
+		nextHigh := series.GetCandle(index).MaxPrice
 		if nextHigh.GT(high) {
 			high = nextHigh
 		}
@@ -124,11 +124,11 @@ func calculateS2(pivotPoint big.Decimal, series *TimeSeries, previousPeriodIndex
 	low := lastCandle.MinPrice
 
 	for _, index := range previousPeriodIndexes {
-		nextHigh := series.GetCandle(previousPeriodIndexes[index]).MaxPrice
+		nextHigh := series.GetCandle(index).MaxPrice
 		if nextHigh.GT(high) {
 			high = nextHigh
 		}
-		nextLow := series.GetCandle(previousPeriodIndexes[index]).MinPrice
+		nextLow := series.GetCandle(index).MinPrice
 		if nextLow.LT(low) {
 			low = nextLow
 		}
@@ -143,11 +143,11 @@ func calculateS3(pivotPoint big.Decimal, series *TimeSeries, previousPeriodIndex
 	low := lastCandle.MinPrice
 
 	for _, index := range previousPeriodIndexes {
-		nextHigh := series.GetCandle(previousPeriodIndexes[index]).MaxPrice
+		nextHigh := series.GetCandle(index).MaxPrice
 		if nextHigh.GT(high) {
 			high = nextHigh
 		}
-		nextLow := series.GetCandle(previousPeriodIndexes[index]).MinPrice
+		nextLow := series.GetCandle(index).MinPrice
 		if nextLow.LT(low) {
 			low = nextLow
 		}

@@ -1,8 +1,6 @@
 package techan
 
 import (
-	"time"
-
 	"github.com/sdcoffey/big"
 )
 
@@ -39,11 +37,11 @@ func CalculatePivotPoint(series *TimeSeries, previousPeriodIndexes []int) big.De
 	low := lastCandle.MinPrice
 
 	for _, index := range previousPeriodIndexes {
-		nextHigh := series.GetCandle(previousPeriodIndexes[index]).MaxPrice
+		nextHigh := series.GetCandle(index).MaxPrice
 		if nextHigh.GT(high) {
 			high = nextHigh
 		}
-		nextLow := series.GetCandle(previousPeriodIndexes[index]).MinPrice
+		nextLow := series.GetCandle(index).MinPrice
 		if nextLow.LT(low) {
 			low = nextLow
 		}
@@ -71,7 +69,7 @@ func getPreviousPeriodSeries(index int, series *TimeSeries, timeLevel TimeLevel)
 		index--
 	}
 
-	previousPeriod := getPreviousPeriod(currentCandle, timeLevel)
+	previousPeriod := getPreviousPeriod(index, timeLevel, series)
 
 	for index-1 > 0 && getPeriod(series.GetCandle(index-1), timeLevel) == previousPeriod {
 		index--
@@ -98,23 +96,26 @@ func getPeriod(candle *Candle, timeLevel TimeLevel) int {
 	}
 }
 
-func getPreviousPeriod(candle *Candle, timeLevel TimeLevel) int {
+func getPreviousPeriod(index int, timeLevel TimeLevel, series *TimeSeries) int {
+	currentCandle := series.GetCandle(index)
 	switch timeLevel {
 	case DAY:
-		previousDay := candle.Period.End.AddDate(0, 0, -1)
-		for previousDay.Weekday() != time.Saturday && previousDay.Weekday() != time.Sunday {
-			previousDay = candle.Period.End.AddDate(0, 0, -1)
+		previousCandle := series.GetCandle(index - 1)
+		prevCalendarDay := currentCandle.Period.Start.AddDate(0, 0, -1).YearDay()
+		// skip weekend and holidays
+		for previousCandle.Period.Start.YearDay() != prevCalendarDay && prevCalendarDay >= 0 {
+			prevCalendarDay--
 		}
-		return previousDay.YearDay()
+		return prevCalendarDay
 
 	case WEEK:
-		_, w := candle.Period.End.ISOWeek()
+		_, w := currentCandle.Period.End.ISOWeek()
 		return w - 1
 
 	case MONTH:
-		return int(candle.Period.End.AddDate(0, -1, 0).Month())
+		return int(currentCandle.Period.End.AddDate(0, -1, 0).Month())
 
 	default:
-		return candle.Period.End.AddDate(-1, 0, 0).Year()
+		return currentCandle.Period.End.AddDate(-1, 0, 0).Year()
 	}
 }
