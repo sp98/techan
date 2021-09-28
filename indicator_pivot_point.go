@@ -82,17 +82,17 @@ func getPreviousPeriodSeries(index int, series *TimeSeries, timeLevel TimeLevel)
 func getPeriod(candle *Candle, timeLevel TimeLevel) int {
 	switch timeLevel {
 	case DAY:
-		return candle.Period.End.YearDay()
+		return candle.Period.Start.YearDay()
 
 	case WEEK:
-		_, w := candle.Period.End.ISOWeek()
+		_, w := candle.Period.Start.ISOWeek()
 		return w
 
 	case MONTH:
-		return int(candle.Period.End.Month())
+		return int(candle.Period.Start.Month())
 
 	default:
-		return candle.Period.End.Year()
+		return candle.Period.Start.Year()
 	}
 }
 
@@ -109,13 +109,13 @@ func getPreviousPeriod(index int, timeLevel TimeLevel, series *TimeSeries) int {
 		return prevCalendarDay
 
 	case WEEK:
-		_, w := currentCandle.Period.End.ISOWeek()
+		_, w := currentCandle.Period.Start.ISOWeek()
 		return w - 1
 
 	case MONTH:
-		return int(currentCandle.Period.End.AddDate(0, -1, 0).Month())
+		return int(currentCandle.Period.Start.AddDate(0, -1, 0).Month())
 
 	default:
-		return currentCandle.Period.End.AddDate(-1, 0, 0).Year()
+		return currentCandle.Period.Start.AddDate(-1, 0, 0).Year()
 	}
 }
