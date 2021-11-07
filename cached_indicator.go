@@ -44,3 +44,22 @@ func returnIfCached(indicator cachedIndicator, index int, firstValueFallback fun
 
 	return nil
 }
+
+func returnIfCached2(indicator cachedIndicator, index int, firstValueFallback func(int) big.Decimal) *big.Decimal {
+	if index >= len(indicator.cache()) {
+		expandResultCache(indicator, index+1)
+	} else if index < indicator.windowSize()-1 {
+		return &big.ZERO
+	} else if val := indicator.cache()[index]; val != nil {
+		return val
+	} else if index <= indicator.windowSize()+7 {
+		value := firstValueFallback(index)
+		cacheResult(indicator, index, value)
+		if index > indicator.windowSize()-1 {
+			return nil
+		}
+		return &value
+	}
+
+	return nil
+}

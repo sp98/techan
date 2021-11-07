@@ -87,3 +87,20 @@ func (tpi typicalPriceIndicator) Calculate(index int) big.Decimal {
 	numerator := tpi.Candles[index].MaxPrice.Add(tpi.Candles[index].MinPrice).Add(tpi.Candles[index].ClosePrice)
 	return numerator.Div(big.NewFromString("3"))
 }
+
+type ohlc4Indicator struct {
+	*TimeSeries
+}
+
+// NewOHLC4Indicator returns an average of open, high, low and close price for each candle.
+func NewOHLC4Indicator(series *TimeSeries) Indicator {
+	return ohlc4Indicator{
+		series,
+	}
+}
+
+func (i ohlc4Indicator) Calculate(index int) big.Decimal {
+	// (Open+High+Low+Close)/4
+	return (i.Candles[index].OpenPrice.Add(i.Candles[index].MaxPrice).Add(i.Candles[index].MinPrice).
+		Add(i.Candles[index].ClosePrice)).Div(big.NewFromInt(4))
+}
